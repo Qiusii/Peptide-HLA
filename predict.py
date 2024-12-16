@@ -46,10 +46,10 @@ def predict_MIL(model, data, device):
 def main():
     parser = argparse.ArgumentParser(description='Running the inference model.')
 
-    parser.add_argument('--input', type=str, required=True, help='Path to the input data file.')
-    parser.add_argument('--output', type=str, default='./output/output.txt', help='Path to save the output results.')
-    parser.add_argument('--device', type=str, default='cpu', help='Whether to use GPU for inference, e.g. "cuda:0"')
-    parser.add_argument('--bacth_size', type=int, default=64, help='Batch size of input data')
+    parser.add_argument('-i', '--input', type=str, required=True, help='Path to the input data file.')
+    parser.add_argument('-o', '--output', type=str, default='./output/output.txt', help='Path to save the output results.')
+    parser.add_argument('-d', '--device', type=str, default='cpu', help='Whether to use GPU for inference, e.g. "cuda:0"')
+    parser.add_argument('-b', '--bacth_size', type=int, default=64, help='Batch size of input data')
 
     args = parser.parse_args()
 
