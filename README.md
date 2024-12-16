@@ -13,7 +13,7 @@ A peptide-HLA Binding Estimation using Immune Technology of Artificial Intellige
 ## Installation
 
 1. Download the BeitAI-pHLA repository.
-2. Download the model weight file from https://drive.google.com/drive/folders/1TZ5crvmMiKCRJLJsdYxzrU89jTVMh7ERand and put it in 'model_file/'.
+2. Download the model weight file from https://drive.google.com/drive/folders/1TZ5crvmMiKCRJLJsdYxzrU89jTVMh7ERand and put it in `model_file/`.
 3. Ensure that Python 3.x is installed.
 4. Installation dependencies:
     ```
