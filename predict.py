@@ -44,38 +44,35 @@ def predict_MIL(model, data, device):
 
 
 def main():
-    # parser = argparse.ArgumentParser(description='Running the inference model.')
-    #
-    # # 添加命令行参数
-    # parser.add_argument('--input', type=str, required=True, help='Path to the input data file.')
-    # parser.add_argument('--output', type=str, default='./output/output.txt', help='Path to save the output results.')
-    # parser.add_argument('--device', type=str, default='cpu', help='Whether to use GPU for inference, e.g. "cuda:0"')
-    # parser.add_argument('--bacth_size', type=int, default=64, help='Batch size of input data')
-    #
-    # # 解析命令行参数
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser(description='Running the inference model.')
 
-    input_data = './test_data/input_data.txt'
-    output_path = './output/output.txt'
-    bacth_size = 64
-    device = torch.device("cuda:0")
+    parser.add_argument('--input', type=str, required=True, help='Path to the input data file.')
+    parser.add_argument('--output', type=str, default='./output/output.txt', help='Path to save the output results.')
+    parser.add_argument('--device', type=str, default='cpu', help='Whether to use GPU for inference, e.g. "cuda:0"')
+    parser.add_argument('--bacth_size', type=int, default=64, help='Batch size of input data')
+
+    args = parser.parse_args()
+
+    # input_data = './test_data/input_data.txt'
+    # output_path = './output/output.txt'
+    # bacth_size = 64
     # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     emb_model, _ = esm.pretrained.esm2_t33_650M_UR50D()
-    model = MHCpre_model_MIL_Capsule(emb_model, device)
+    model = MHCpre_model_MIL_Capsule(emb_model, args.device)
 
     model.load_state_dict(torch.load('./model_file/model_weights.ckpt'))
-    model.to(device)
+    model.to(args.device)
 
-    dataset = MHC_EL_split(input_data, max_pep_len=15)
+    dataset = MHC_EL_split(args.input, max_pep_len=15)
     dataset_load = DataLoader(dataset,
-                              batch_size=bacth_size,
+                              batch_size=args.bacth_size,
                               shuffle=False,
                               num_workers=10,
                               pin_memory=True,
                               collate_fn=dataset.collate_fn)
-    peptides, mhc_str, res_pred, res_probs, mhc_label = predict_MIL(model, dataset_load, device)
-    with open(output_path, 'w') as f:
+    peptides, mhc_str, res_pred, res_probs, mhc_label = predict_MIL(model, dataset_load, args.device)
+    with open(args.output, 'w') as f:
         f.write("peptides\tallele\tpred_score\tpred_label\tbest_allele_id\n")
         for i in range(len(peptides)):
             f.write(peptides[i] + "\t" + mhc_str[i] + "\t" + str(res_probs[i]) + "\t" + str(res_pred[i]) + "\t" + str(mhc_label[i]) + "\n")
