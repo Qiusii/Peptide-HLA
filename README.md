@@ -1,4 +1,4 @@
-# BeitAI-pHLA
+# Peptide-HLA
 
 A peptide-HLA Binding Estimation using Immune Technology of Artificial Intelligence.
 
